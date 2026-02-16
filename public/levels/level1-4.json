@@ -1,0 +1,20 @@
+{
+  "name": "Patio de Casa 1-4",
+  "theme": "patio",
+  "width": 2000,
+  "height": 600,
+  "spawnPoint": { "x": 100, "y": 450 },
+  "platforms": [
+    { "x": 0, "y": 550, "width": 2000, "height": 50, "type": "ground" },
+    { "x": 400, "y": 400, "width": 400, "height": 20, "type": "platform" },
+    { "x": 1000, "y": 300, "width": 400, "height": 20, "type": "platform" }
+  ],
+  "enemies": [
+    { "type": "clone", "x": 600, "y": 350 },
+    { "type": "clone", "x": 1200, "y": 250 }
+  ],
+  "items": [
+    { "type": "life_bone", "x": 1100, "y": 250 }
+  ],
+  "goal": { "x": 1900, "y": 500 }
+}

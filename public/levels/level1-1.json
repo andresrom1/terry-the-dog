@@ -1,0 +1,24 @@
+{
+  "name": "Patio de Casa 1-1",
+  "theme": "patio",
+  "width": 2000,
+  "height": 600,
+  "spawnPoint": { "x": 100, "y": 450 },
+  "platforms": [
+    { "x": 0, "y": 550, "width": 800, "height": 50, "type": "ground" },
+    { "x": 900, "y": 550, "width": 1100, "height": 50, "type": "ground" },
+    { "x": 400, "y": 400, "width": 200, "height": 20, "type": "platform" },
+    { "x": 700, "y": 300, "width": 200, "height": 20, "type": "platform" },
+    { "x": 1000, "y": 400, "width": 200, "height": 20, "type": "platform" }
+  ],
+  "enemies": [
+    { "type": "clone", "x": 500, "y": 500 },
+    { "type": "clone", "x": 1200, "y": 500 },
+    { "type": "clone", "x": 1500, "y": 500 }
+  ],
+  "items": [
+    { "type": "red_bone", "x": 750, "y": 250 }
+  ],
+  "goal": { "x": 1900, "y": 500 },
+  "nextLevel": "level1-2"
+}
