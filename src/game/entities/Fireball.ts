@@ -1,16 +1,18 @@
 import Phaser from 'phaser';
 
-export class Fireball extends Phaser.GameObjects.Rectangle {
-    declare public body: Phaser.Physics.Arcade.Body;
+export class Fireball extends Phaser.Physics.Arcade.Sprite {
     private speed: number = 400;
 
     constructor(scene: Phaser.Scene, x: number, y: number, direction: number) {
-        super(scene, x, y, 10, 10, 0xff0000); // Red for fireball
+        super(scene, x, y, 'fireball');
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
         this.body.setAllowGravity(false);
         this.body.setVelocityX(direction * this.speed);
+
+        // Ensure it's correctly sized and visible
+        this.setDisplaySize(15, 15);
     }
 
     update() {

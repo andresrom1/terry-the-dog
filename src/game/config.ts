@@ -1,6 +1,9 @@
 import Phaser from 'phaser';
 import { MainScene } from './scenes/MainScene';
 import { UIScene } from './scenes/UIScene';
+import { BootScene } from './scenes/BootScene';
+import { CharacterSelectScene } from './scenes/CharacterSelectScene';
+import { ReviveScene } from './scenes/ReviveScene';
 
 export const GameConfig: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
@@ -18,5 +21,5 @@ export const GameConfig: Phaser.Types.Core.GameConfig = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
-    scene: [MainScene, UIScene]
+    scene: [BootScene, CharacterSelectScene, MainScene, UIScene, ReviveScene]
 };

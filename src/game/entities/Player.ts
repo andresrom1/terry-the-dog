@@ -1,11 +1,9 @@
 import Phaser from 'phaser';
 import { Fireball } from './Fireball';
 
-export class Player extends Phaser.GameObjects.Rectangle {
-    declare public body: Phaser.Physics.Arcade.Body;
-
+export class Player extends Phaser.Physics.Arcade.Sprite {
     private moveSpeed: number = 200;
-    private jumpForce: number = 350;
+    private jumpForce: number = 400;
 
     public lives: number = 6;
     public healthBars: number = 10;
@@ -18,12 +16,17 @@ export class Player extends Phaser.GameObjects.Rectangle {
     private biteHitbox: Phaser.GameObjects.Rectangle;
     private alreadyHit: Set<Phaser.GameObjects.GameObject> = new Set();
 
-    constructor(scene: Phaser.Scene, x: number, y: number) {
-        super(scene, x, y, 40, 40, 0x8b4513); // Brown for Terry
+    public lastDirection: number = 1; // 1 for right, -1 for left
+
+    constructor(scene: Phaser.Scene, x: number, y: number, texture: string = 'terry') {
+        super(scene, x, y, texture);
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
         this.body.setCollideWorldBounds(true);
+        // Ensure the sprite is visible
+        this.setOrigin(0.5, 0.5);
+        this.setDisplaySize(40, 40);
 
         this.biteHitbox = scene.add.rectangle(0, 0, 40, 40, 0xffffff, 0);
         scene.physics.add.existing(this.biteHitbox);
@@ -35,14 +38,25 @@ export class Player extends Phaser.GameObjects.Rectangle {
     update(input: { left: boolean, right: boolean, jump: boolean, bite: boolean, fireball: boolean }) {
         if (input.left) {
             this.body.setVelocityX(-this.moveSpeed);
+            this.lastDirection = -1;
+            this.setFlipX(true);
         } else if (input.right) {
             this.body.setVelocityX(this.moveSpeed);
+            this.lastDirection = 1;
+            this.setFlipX(false);
         } else {
             this.body.setVelocityX(0);
         }
 
         if (input.jump && this.body.blocked.down) {
             this.body.setVelocityY(-this.jumpForce);
+            this.scene.tweens.add({
+                targets: this,
+                scaleY: 1.2,
+                scaleX: 0.8,
+                duration: 100,
+                yoyo: true
+            });
         }
 
         if (input.bite) {
@@ -57,11 +71,11 @@ export class Player extends Phaser.GameObjects.Rectangle {
     bite() {
         if (this.biteHitbox.active) return; // Already biting
 
-        const direction = this.body.velocity.x >= 0 ? 1 : -1;
-        this.biteHitbox.setPosition(this.x + (direction * 30), this.y);
+        this.biteHitbox.setPosition(this.x + (this.lastDirection * 30), this.y);
         this.biteHitbox.setActive(true);
         this.alreadyHit.clear();
 
+        // Brief bite animation effect (placeholder)
         this.scene.time.delayedCall(200, () => {
             this.biteHitbox.setActive(false);
         });
@@ -78,9 +92,11 @@ export class Player extends Phaser.GameObjects.Rectangle {
     shootFireball() {
         const now = this.scene.time.now;
         if (now - this.lastFired > this.fireRate) {
-            const direction = this.body.velocity.x >= 0 ? 1 : -1;
-            const fireball = new Fireball(this.scene, this.x, this.y, direction);
-            (this.scene as any).fireballs.add(fireball);
+            const fireball = new Fireball(this.scene, this.x, this.y, this.lastDirection);
+            const mainScene = this.scene as any;
+            if (mainScene.fireballs) {
+                mainScene.fireballs.add(fireball);
+            }
             this.lastFired = now;
         }
     }
@@ -91,6 +107,11 @@ export class Player extends Phaser.GameObjects.Rectangle {
 
     takeDamage() {
         this.healthBars--;
+        // Visual feedback for damage
+        this.setTint(0xff0000);
+        this.scene.cameras.main.shake(100, 0.01);
+        this.scene.time.delayedCall(200, () => this.clearTint());
+
         if (this.healthBars <= 0) {
             this.loseLife();
         }
@@ -100,7 +121,11 @@ export class Player extends Phaser.GameObjects.Rectangle {
         if (this.lives > 0) {
             this.lives--;
             this.healthBars = this.maxHealthBars;
-            // Handle respawn or death animation
+            // Respawn at start or current position
+            this.setPosition(this.x, this.y - 100);
+        } else {
+            // Trigger Revive minigame (handled in MainScene)
+            this.emit('gameOver');
         }
     }
 }

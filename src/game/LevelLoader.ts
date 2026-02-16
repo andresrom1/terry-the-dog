@@ -16,7 +16,8 @@ export class LevelLoader {
         // Create platforms
         const platforms = this.scene.physics.add.staticGroup();
         data.platforms.forEach(p => {
-            const platform = this.scene.add.rectangle(p.x + p.width / 2, p.y + p.height / 2, p.width, p.height, 0x00ff00);
+            // Use tiles or a generated texture
+            const platform = this.scene.add.tileSprite(p.x + p.width / 2, p.y + p.height / 2, p.width, p.height, 'platform');
             this.scene.physics.add.existing(platform, true);
             platforms.add(platform);
         });
@@ -24,9 +25,12 @@ export class LevelLoader {
         // Create items
         const items = this.scene.physics.add.staticGroup();
         data.items.forEach(i => {
-            let color = 0xffffff;
-            if (i.type === 'red_bone') color = 0xff0000;
-            const item = this.scene.add.rectangle(i.x, i.y, 30, 15, color);
+            let texture = 'life_bone';
+            if (i.type === 'red_bone') texture = 'red_bone';
+            else if (i.type === 'blue_bone') texture = 'blue_bone';
+            else if (i.type === 'combo_bone') texture = 'combo_bone';
+
+            const item = this.scene.add.sprite(i.x, i.y, texture);
             this.scene.physics.add.existing(item, true);
             (item as any).itemType = i.type;
             items.add(item);
