@@ -13,11 +13,18 @@ export class LevelLoader {
         this.scene.physics.world.setBounds(0, 0, data.width, data.height);
         this.scene.cameras.main.setBounds(0, 0, data.width, data.height);
 
+        // Set background color based on theme
+        if (data.theme === 'patio') {
+            this.scene.cameras.main.setBackgroundColor('#87CEEB'); // Sky blue
+        } else if (data.theme === 'dream') {
+            this.scene.cameras.main.setBackgroundColor('#4B0082'); // Indigo
+        }
+
         // Create platforms
         const platforms = this.scene.physics.add.staticGroup();
         data.platforms.forEach(p => {
-            // Use tiles or a generated texture
-            const platform = this.scene.add.tileSprite(p.x + p.width / 2, p.y + p.height / 2, p.width, p.height, 'platform');
+            const texture = p.type === 'ground' ? 'ground' : 'platform';
+            const platform = this.scene.add.tileSprite(p.x + p.width / 2, p.y + p.height / 2, p.width, p.height, texture);
             this.scene.physics.add.existing(platform, true);
             platforms.add(platform);
         });

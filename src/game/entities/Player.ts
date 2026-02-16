@@ -26,16 +26,16 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.body.setCollideWorldBounds(true);
         // Ensure the sprite is visible
         this.setOrigin(0.5, 0.5);
-        this.setDisplaySize(40, 40);
+        this.setDisplaySize(30, 30);
 
-        this.biteHitbox = scene.add.rectangle(0, 0, 40, 40, 0xffffff, 0);
+        this.biteHitbox = scene.add.rectangle(0, 0, 30, 30, 0xffffff, 0);
         scene.physics.add.existing(this.biteHitbox);
         (this.biteHitbox.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
         this.biteHitbox.setActive(false);
         this.biteHitbox.setVisible(false);
     }
 
-    update(input: { left: boolean, right: boolean, jump: boolean, bite: boolean, fireball: boolean }) {
+    update(input: { left: boolean, right: boolean, jump: boolean, bite: boolean, fireball: boolean, ice: boolean, combo: boolean }) {
         if (input.left) {
             this.body.setVelocityX(-this.moveSpeed);
             this.lastDirection = -1;

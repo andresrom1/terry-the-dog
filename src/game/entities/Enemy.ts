@@ -13,7 +13,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
 
         this.body.setCollideWorldBounds(true);
-        this.setDisplaySize(40, 40);
+        this.setDisplaySize(30, 30);
     }
 
     update() {

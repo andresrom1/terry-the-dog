@@ -15,6 +15,9 @@ export class UIScene extends Phaser.Scene {
     }
 
     create() {
+        // Support multi-touch
+        this.input.addPointer(3);
+
         this.lifeText = this.add.text(20, 20, 'Lives: 6', { fontSize: '24px', color: '#fff' });
         this.timerText = this.add.text(this.cameras.main.width / 2, 20, '', { fontSize: '32px', color: '#ffff00' }).setOrigin(0.5);
 
@@ -90,13 +93,24 @@ export class UIScene extends Phaser.Scene {
             this.updateJoystickInput(0);
         });
 
-        // Action Buttons (Right side)
-        // A: Bite, B: Jump, C: Fireball, D: Ice, E: Combo
-        this.createButton(width - 80, height - 80, 'A', 0xff0000, 'bite');
-        this.createButton(width - 180, height - 80, 'B', 0x00ff00, 'jump');
-        this.createButton(width - 80, height - 180, 'C', 0xffa500, 'fireball'); // Orange for fire
-        this.createButton(width - 180, height - 180, 'D', 0x00ffff, 'ice'); // Cyan for ice
-        this.createButton(width - 130, height - 260, 'E', 0xff00ff, 'combo'); // Purple for combo
+        // Ergonomic Button Layout
+        // A (Red - Bite): Bottom-right, primary position
+        // B (Green - Jump): Slightly left and up from A
+        // C (Orange - Fire): Above A
+        // D (Cyan - Ice): Above B
+        // E (Magenta - Combo): Centered above C and D
+
+        const btnA = { x: width - 80, y: height - 80 };
+        const btnB = { x: width - 180, y: height - 100 };
+        const btnC = { x: width - 80, y: height - 180 };
+        const btnD = { x: width - 180, y: height - 200 };
+        const btnE = { x: width - 130, y: height - 280 };
+
+        this.createButton(btnA.x, btnA.y, 'A', 0xff0000, 'bite');
+        this.createButton(btnB.x, btnB.y, 'B', 0x00ff00, 'jump');
+        this.createButton(btnC.x, btnC.y, 'C', 0xffa500, 'fireball');
+        this.createButton(btnD.x, btnD.y, 'D', 0x00ffff, 'ice');
+        this.createButton(btnE.x, btnE.y, 'E', 0xff00ff, 'combo');
     }
 
     private createButton(x: number, y: number, label: string, color: number, action: string) {
