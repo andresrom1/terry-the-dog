@@ -47,8 +47,8 @@ export class UIScene extends Phaser.Scene {
         const height = this.cameras.main.height;
 
         // Joystick base (Left side)
-        const joystickBase = this.add.circle(100, height - 100, 50, 0x888888, 0.5).setInteractive();
-        const joystickThumb = this.add.circle(100, height - 100, 25, 0xcccccc, 0.8).setInteractive();
+        const joystickBase = this.add.circle(120, height - 120, 60, 0x888888, 0.5).setInteractive();
+        const joystickThumb = this.add.circle(120, height - 120, 30, 0xcccccc, 0.8).setInteractive();
 
         this.input.setDraggable(joystickThumb);
 
@@ -56,7 +56,7 @@ export class UIScene extends Phaser.Scene {
             const distance = Phaser.Math.Distance.Between(joystickBase.x, joystickBase.y, dragX, dragY);
             const angle = Phaser.Math.Angle.Between(joystickBase.x, joystickBase.y, dragX, dragY);
 
-            const maxDistance = 50;
+            const maxDistance = 60;
             if (distance > maxDistance) {
                 joystickThumb.x = joystickBase.x + Math.cos(angle) * maxDistance;
                 joystickThumb.y = joystickBase.y + Math.sin(angle) * maxDistance;
@@ -75,9 +75,9 @@ export class UIScene extends Phaser.Scene {
         });
 
         // Action Buttons (Right side)
-        this.createButton(width - 60, height - 60, 'A', 0xff0000, 'bite');
-        this.createButton(width - 140, height - 60, 'B', 0x00ff00, 'jump');
-        this.createButton(width - 60, height - 140, 'C', 0x0000ff, 'fireball');
+        this.createButton(width - 80, height - 80, 'A', 0xff0000, 'bite');
+        this.createButton(width - 180, height - 80, 'B', 0x00ff00, 'jump');
+        this.createButton(width - 80, height - 180, 'C', 0x0000ff, 'fireball');
     }
 
     private createButton(x: number, y: number, label: string, color: number, action: string) {
