@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 import { Player } from '../entities/Player';
 
+import pkg from '../../../package.json';
+
 export class UIScene extends Phaser.Scene {
     private player!: Player;
     private lifeText!: Phaser.GameObjects.Text;
@@ -15,6 +17,9 @@ export class UIScene extends Phaser.Scene {
     create() {
         this.lifeText = this.add.text(20, 20, 'Lives: 6', { fontSize: '24px', color: '#fff' });
         this.timerText = this.add.text(this.cameras.main.width / 2, 20, '', { fontSize: '32px', color: '#ffff00' }).setOrigin(0.5);
+
+        // Version number
+        this.add.text(this.cameras.main.width - 10, 10, `v${pkg.version}`, { fontSize: '14px', color: '#888' }).setOrigin(1, 0);
 
         // Create health bars
         for (let i = 0; i < 10; i++) {
