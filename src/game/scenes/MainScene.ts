@@ -98,8 +98,9 @@ export class MainScene extends Phaser.Scene {
         const { platforms, items, spawnPoint, enemies, goal, nextLevel } = this.levelLoader.loadLevel(levelData);
 
         this.fireballs = this.physics.add.group({
-            classType: Phaser.Physics.Arcade.Sprite,
-            runChildUpdate: true
+            classType: Fireball,
+            runChildUpdate: true,
+            allowGravity: false
         });
 
         this.enemies = this.physics.add.group({

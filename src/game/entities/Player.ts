@@ -96,6 +96,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             const mainScene = this.scene as any;
             if (mainScene.fireballs) {
                 mainScene.fireballs.add(fireball);
+                // Re-set velocity after adding to group to be absolutely sure
+                if (fireball.body) {
+                    fireball.body.allowGravity = false;
+                    fireball.body.setVelocityX(this.lastDirection * 400);
+                    fireball.body.setVelocityY(0);
+                }
             }
             this.lastFired = now;
         }

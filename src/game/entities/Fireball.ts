@@ -8,8 +8,10 @@ export class Fireball extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        this.body.setAllowGravity(false);
-        this.body.setVelocityX(direction * this.speed);
+        if (this.body) {
+            this.body.allowGravity = false;
+            this.body.setVelocityX(direction * this.speed);
+        }
 
         // Ensure it's correctly sized and visible
         this.setDisplaySize(15, 15);
